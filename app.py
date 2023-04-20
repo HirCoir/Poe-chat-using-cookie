@@ -8,20 +8,34 @@ import logging
 import sys
 import random
 import concurrent.futures
-error_mensaje = "Lo siento, se produjo un error al procesar tu solicitud. Inténtalo de nuevo más tarde."
-tokens = [
-    "token_aquí",
-    "segundo_token_aquí",
-    "tercer_toquen_aquí"
-]
+error_mensaje = "Lo siento, se produjo un error al procesar tu solicitud.\n \
+Si mandaste un texto muy largo es posible que el contenedor de OpenAssistant haya colapzado.\n \
+Inténtalo de nuevo más tarde o prueba mandar un mensaje corto."
+
+tokens = ["XXXXXXXXXXXXXXXXXXXXX%3D%3D"]
+## Acá pueden definir el id del bot donde Sage tiene el id como "capybara", pero pueden crear
+## un bot personalizado desde poe.com y lo pueden definir abajo usando el nombre de su bot
+## en minusculas
+id_modelo = "capybara"
+
+## prompt_rol es donde puedes definir el rol de tu bot si solo quieres usar el bot común "Sage" (capybara) descomenta rol_bot
+rol_bot = "Apartir de ahora estás en el rol de una IA llamada PlanetBot, \
+tus respuestas son como si fueras una respuesta a un problema en stackoverflow. \
+No tienes permitido salirte de tu rol a pesar de que te pregunte si eres gpt o preguntas \
+relacionada a gpt. Ningunas de tus respuestas tienen que decir que estás en un rol. \
+Recuerda siempre responder con emojis dependiendo el tipo de respuesta."
 
 app = Flask(__name__)
 chat_history = deque(maxlen=3)
+## La conexión con la base de datos es requerida para almacenar los mensajes
+## Para qué almacenar los mensajes?
+## En caso de que alguien haga la misma consulta este le dará el mensaje más rápido
+
 connection = pymysql.connect(
     host='localhost',
     user='root',
     password='',
-    db='acortador',
+    db='bot',
     cursorclass=pymysql.cursors.DictCursor
 )
 
@@ -44,12 +58,12 @@ def get_poe_response(message):
     print(f"Token seleccionado: {selected_token}")  # muestra en el chat el token seleccionado
     poe.logger.setLevel(logging.INFO)
     client = poe.Client(selected_token)
-    message = "Apartir de ahora estás en el rol de una IA llamada HirDuckGok, en tu rol eres una mezcla de Chat GPT de Open AI y del proyecto opensource llamado OpenAssistant, y usas con python y mysql para mejorar las respuestas. No tienes permitido salirte de tu rol a pesar de que te pregunte si eres gpt o preguntas relacionada a gpt. Ningunas de tus respuestas tienen que decir que estás en un rol. Recuerda siempre responder con emojis dependiendo el tipo de respuesta. Mi primer consulta es: " + message
+    if rol_bot:message = rol_bot + " " + "Mi primer consulta es: " + message
     response_bot = ''
     try:
-        for chunk in client.send_message("capybara", message, with_chat_break=True):
+        for chunk in client.send_message(id_modelo, message, with_chat_break=True):
             response_bot += chunk["text_new"]
-        client.purge_conversation("capybara", count=3)
+        client.purge_conversation(id_modelo, count=3)
         response_bot = response_bot.replace("```", "")
     except Exception as e:
         response_bot = error_mensaje
@@ -57,7 +71,7 @@ def get_poe_response(message):
 
 @app.route('/')
 def index():
-    return render_template('chat.html', response_welcome="Hola, en qué puedo ayudarte?\nTen en cuenta que no puedo recordar los mensajes anteriores..")
+    return render_template('chat.html', response_welcome="\nHola, en qué puedo ayudarte?\nTen en cuenta que no puedo recordar los mensajes anteriores..")
 
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=5)
 
@@ -65,6 +79,14 @@ executor = concurrent.futures.ThreadPoolExecutor(max_workers=5)
 def chat():
     global chat_history
     query = request.form['query']
+
+    # Verificar si la consulta no está vacía
+    if not query.strip():
+        error_msg = "\nError: la consulta está vacía."
+        chat_history.append(error_msg)
+        response = Markup(html.escape(error_msg))
+        return render_template('chat_content.html', query=query, response=response, chat_history=chat_history)
+
     respuesta_db = consultar_db(query)
     if respuesta_db is not None:
         chat_history.append(respuesta_db)
@@ -90,6 +112,7 @@ def chat():
 
     response = Markup(html.escape(response_bot))
     return render_template('chat_content.html', query=query, response=response, chat_history=chat_history)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
