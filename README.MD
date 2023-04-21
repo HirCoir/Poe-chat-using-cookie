@@ -6,6 +6,7 @@ Este chatbot es capaz de interactuar con los bots de poe.com mediante el uso de 
 ![Respuesta del chat](https://github.com/HirCoir/Poe-chat-using-cookie/blob/main/web-respuesta.PNG)
 
 ![Procesando mensaje del chat](https://github.com/HirCoir/Poe-chat-using-cookie/blob/main/web-procesando.PNG)
+![Procesando mensaje del chat](https://github.com/HirCoir/Poe-chat-using-cookie/blob/main/datos.PNG)
 
 ## Módulos PIP necesarios
 
