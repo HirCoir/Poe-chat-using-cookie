@@ -1,17 +1,11 @@
-FROM alpine:latest
-
-# Actualiza los repositorios e instala las dependencias necesarias
-RUN apk update && \
-    apk add --no-cache python3 && \
+FROM debian:latest
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip && \
     pip3 install --upgrade pip && \
     pip install Flask pymysql poe-api
 
-# Copia el código fuente al contenedor
 COPY . /app
 RUN rm /app/Dockerfile
-
-# Establece el directorio de trabajo
 WORKDIR /app
 
-# Define el comando que se ejecutará al iniciar el contenedor
 CMD ["python3", "app.py"]
