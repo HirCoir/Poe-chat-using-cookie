@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>Chat</title>
+ <link rel="shortcut icon" href="https://yt3.googleusercontent.com/FTABD5ZZiDs4-EwSzBZD_bI8ofgk_mcwrvOMlMfuodcjaSgE4Mfjdl8J0NZipIQbk_Q_0Q_t=s176-c-k-c0x00ffffff-no-rj" type="image/x-icon">
+ <!-- Agregamos Bootstrap CDN para facilitar el diseño -->
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ <!-- Agregamos estilo personalizado -->
+ <style>
+  html, body {
+   height: 100%;
+   background-color: #343a40; /* Color de fondo */
+   color: #17a2b8; /* Color de las letras */
+  }
+  #chat-container {
+     display: flex;
+     flex-direction: column;
+     height: 100%;
+  }
+  #message-container {
+     flex: 1;
+     overflow-y: auto;
+     padding: 10px;
+  }
+  #message-card {
+     margin-bottom: 10px;
+  }
+  #message-input {
+   margin-bottom: 0;
+  }
+  #loading-indicator {
+  display: none;
+}
+ </style>
+</head>
+<body>
+ <div class="container h-100">
+  <div class="row align-items-center justify-content-center h-100">
+   <div class="col-md-6 col-sm-10">
+
+<div id="chat-container">
+  <div id="message-container">
+    {% include 'chat_content.html' %}
+    {% if response_welcome %}
+<div id="message-container">
+  <div class="card" id="message-card">
+    <div class="card-body">
+      <pre style="white-space: pre-wrap;">
+        <p class="card-text"><strong>BOT:</strong>{{ response_welcome }}</p>
+      </pre>
+      <p class="card-text text-muted"><small id="current-time">00:00 00</small></p>
+    </div>
+  </div>
+  <br>
+  {% endif %}
+  </div>
+  <div class="card" id="loading-indicator" style="display: none;">
+    <div class="card-body">
+      <p class="card-text"><strong>Procesando...</strong></p>
+    </div>
+  </div>
+  <br>
+  <form method="POST" id="send-container" class="input-group" onsubmit="submitForm(event)">
+    <input name="query" type="text" id="message-input" value="{{query}}" class="form-control"
+      placeholder="Escribe tu mensaje...">
+    <div class="input-group-append">
+      <button type="submit" id="send-button" class="btn btn-primary">Enviar</button>
+    </div>
+  </form>
+</div>
+   </div>
+  </div>
+ </div>
+</body>
+ <!-- Agregamos Bootstrap y JQuery para facilitar la interacción -->
+ <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper-core.min.js"
+            integrity="sha384-yKGn6kcz1EBUyv6amgvec6CQX9H3c5oZv5wvfqqpBHgr1Vy0utlLkGTTRiZF5inl"
+            crossorigin="anonymous"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  function submitForm(event) {
+    event.preventDefault(); // previene el envío del formulario
+    // muestra el mensaje de carga
+    document.getElementById("loading-indicator").style.display = "block";
+    // desactiva el botón de enviar
+    document.getElementById("send-button").disabled = true;
+    // envía el formulario
+    event.target.submit();
+
+    // muestra el contenedor del mensaje después de enviar el formulario
+    document.getElementById("message-container").style.display = "block";
+  }
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+   function submitForm(event) {
+  event.preventDefault(); // previene el envío del formulario
+  // muestra el mensaje de carga
+  $("#loading-indicator").show();
+  // desactiva el botón de enviar
+  $("#send-button").prop("disabled", true);
+  // envía el formulario mediante AJAX
+  $.ajax({
+    type: event.target.method,
+    url: event.target.action,
+    data: $(event.target).serialize(),
+    success: function(response) {
+      $("#chat-container").html(response);
+      // oculta el mensaje de carga
+      $("#loading-indicator").hide();
+      // activa el botón de enviar
+      $("#send-button").prop("disabled", false);
+    }
+  });
+}
+</script>
+<script>
+  function showCurrentTime() {
+    const now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    let amPm = hours < 12 ? 'AM' : 'PM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // el 0 se convierte en 12 en el formato AM/PM
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    const timeString = hours + ':' + minutes + ' ' + amPm;
+    document.getElementById('current-time').textContent = timeString;
+  }
+
+  // llama a la función cada segundo para actualizar la hora
+  setInterval(showCurrentTime, 1000);
+</script>
+</html>

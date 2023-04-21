@@ -1,0 +1,25 @@
+{% if response %}
+<div id="message-container">
+  <div class="card" id="message-card">
+    <div class="card-body">
+      <pre style="white-space: pre-wrap;">
+        <p class="card-text"><strong>BOT:</strong>{{ response }}</p>
+      </pre>
+      <p class="card-text text-muted"><small>00:00 pm</small></p>
+    </div>
+  </div>
+    <div class="card" id="loading-indicator" style="display: none;">
+    <div class="card-body">
+      <p class="card-text"><strong>Procesando...</strong></p>
+    </div>
+  </div>
+  <br>
+  <form method="POST" id="send-container" class="input-group" onsubmit="submitForm(event)">
+    <input name="query" type="text" id="message-input" value="{{query}}" class="form-control"
+      placeholder="Escribe tu mensaje...">
+    <div class="input-group-append">
+      <input type="hidden" name="last_query" value="{{ session['last_query'] }}">
+      <button type="submit" id="send-button" class="btn btn-primary">Enviar</button>
+    </div>
+  </form>
+{% endif %}
