@@ -1,5 +1,12 @@
 Este chatbot es capaz de interactuar con los bots de poe.com mediante el uso de cookies. Es capaz de enviar mensajes y recibir respuestas de los diferentes bots de poe.com.
 
+
+![Interfaz de usuario del chat](https://raw.githubusercontent.com/HirCoir/Poe-chat-using-cookie/main/web.PNG)
+
+![Respuesta del chat](https://github.com/HirCoir/Poe-chat-using-cookie/blob/main/web-respuesta.PNG)
+
+![Procesando mensaje del chat](https://github.com/HirCoir/Poe-chat-using-cookie/blob/main/web-procesando.PNG)
+
 ## Módulos PIP necesarios
 
 - Flask
