@@ -1,5 +1,3 @@
-# Chatbot de poe.com
-
 Este chatbot es capaz de interactuar con los bots de poe.com mediante el uso de cookies. Es capaz de enviar mensajes y recibir respuestas de los diferentes bots de poe.com.
 
 ## Módulos PIP necesarios
@@ -14,6 +12,7 @@ Este chatbot es capaz de interactuar con los bots de poe.com mediante el uso de 
 - random
 - concurrent.futures
 
+```pip install Flask pymysql poe```
 ## Características
 
 - Almacena los mensajes anteriores en una base de datos para dar una respuesta más rápida en caso de que alguien haga la misma consulta.
@@ -22,6 +21,8 @@ Este chatbot es capaz de interactuar con los bots de poe.com mediante el uso de 
 - Puede ser personalizado mediante la definición del id del bot en el que se desea interactuar.
 - El rol del bot puede ser personalizado mediante la definición de una variable "rol_bot".
 - Respuestas del bot de poe.com se muestran en el chat junto con los mensajes anteriores.
+- El botón de enviar se bloquea para evitar procesar la misma información dos veces.
+- El chatbot fue creado 100% usando Chat GPT 3.5 y openassistant.io
 
 ## Cómo utilizar el chatbot
 
