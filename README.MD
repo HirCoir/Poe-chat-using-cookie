@@ -51,6 +51,18 @@ Para desplegar este chatbot desde el repositorio original, sigue los siguientes 
 3. Asegúrate de tener instalados los módulos pip Flask, pymysql, poe y concurrent.futures.
 4. Ejecuta el archivo `app.py` con Python: `python app.py`
 5. Abre `http://localhost:5000/` en tu navegador web para acceder al chatbot.
+## Como obtener la Cookie y usarla en la app?
+Para que el bot de poe funcione correctamente, es necesario extraer las cookies de su navegador después de iniciar sesión utilizando la extensión Cookie Editor en Google Chrome, puede abrirla con un click. La sesión se llama "p-b" y deberá copiar el valor del campo "value" e insertarlo en:
+tokens = ["XXXXXXXXXXXXXXXXXXXXX%3D%3D"]
+remplazando XXXXXXXXXXXXXXXXXXXXX%3D%3D por la cookie, igual puede insertar varias cookies ya que al enviar el mensaje al bot este elije un token random.
+Ejemplo para usar varas cookies:
+tokens = [
+"XXXXXXXXXXXXXXXXXXXXX%3D%3D",
+"XXXXXXXXXXXXXXXXXXXXX%3D%3D",
+"XXXXXXXXXXXXXXXXXXXXX%3D%3D",
+"XXXXXXXXXXXXXXXXXXXXX%3D%3D",
+"XXXXXXXXXXXXXXXXXXXXX%3D%3D",
+]
 
 ## Cómo crear la base de datos mediante la terminal
 
