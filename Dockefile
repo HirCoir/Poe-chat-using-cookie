@@ -4,7 +4,7 @@ FROM alpine:latest
 RUN apk update && \
     apk add --no-cache python3 && \
     pip3 install --upgrade pip && \
-    pip3 install Flask collections pymysql html logging sys random concurrent.futures
+    pip install Flask pymysql poe-api
 
 # Copia el código fuente al contenedor
 COPY . /app
