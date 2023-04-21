@@ -9,7 +9,7 @@ import sys
 import random
 import concurrent.futures
 error_mensaje = "Lo siento, se produjo un error al procesar tu solicitud.\n \
-Si mandaste un texto muy largo es posible que el contenedor de OpenAssistant haya colapzado.\n \
+Si mandaste un texto muy largo es posible que la api haya colapzado.\n \
 Inténtalo de nuevo más tarde o prueba mandar un mensaje corto."
 
 tokens = ["XXXXXXXXXXXXXXXXXXXXX%3D%3D"]
@@ -33,8 +33,8 @@ chat_history = deque(maxlen=3)
 
 connection = pymysql.connect(
     host='localhost',
-    user='root',
-    password='',
+    user='usuario',
+    password='contraseña',
     db='bot',
     cursorclass=pymysql.cursors.DictCursor
 )
