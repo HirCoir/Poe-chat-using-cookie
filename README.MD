@@ -19,6 +19,7 @@ Este chatbot es capaz de interactuar con los bots de poe.com mediante el uso de 
 - sys
 - random
 - concurrent.futures
+```pip install Flask pymysql poe-api```
 
 ## Características
 
