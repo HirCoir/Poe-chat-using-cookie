@@ -14,7 +14,7 @@ Este chatbot es capaz de interactuar con los bots de poe.com mediante el uso de 
 - collections
 - pymysql
 - html
-- poe
+- poe-api
 - logging
 - sys
 - random
